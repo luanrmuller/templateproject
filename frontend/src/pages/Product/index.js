@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 import { MemoryRouter, Route } from "react-router";
 import { Link } from "react-router-dom";
@@ -24,32 +24,6 @@ export default function Product() {
 
   useEffect(() => {
     loadProducts(page);
-    // api
-    //   .get("/api/products", {
-    //     params: {
-    //       fields: "name code",
-    //       filters: [],
-    //       sort: "code",
-    //       page,
-    //       pageSize
-    //     },
-    //     headers: {
-    //       Authorization: token
-    //     }
-    //   })
-    //   .then(response => {
-    //     console.log(response.data);
-    //     setProducts(response.data);
-
-    //     setTotal(response.headers["x-total-count"]);
-    //     setTotalPages(
-    //       Math.round((response.headers["x-total-count"] / pageSize) * 1) / 1
-    //     );
-    //   })
-    //   .catch(function(error) {
-    //     // handle error
-    //     console.log(error);
-    //   });
   }, [token, page]);
 
   async function loadProducts(page) {
@@ -103,13 +77,6 @@ export default function Product() {
     }
   }
 
-  async function handleEditProduct(product) {
-    try {
-    } catch (error) {
-      alert("Erro ao editar o produto, tente novamente.");
-    }
-  }
-
   return (
     <div>
       <div className="container">
@@ -119,13 +86,6 @@ export default function Product() {
 
         <h1>Produtos cadastrados</h1>
 
-        {/* <Link className="button" to="/products">
-        Adicionar produto
-      </Link> */}
-
-        {/* <Button variant="contained" color="primary">
-      Adicionar produto
-      </Button> */}
         <ProductModal />
 
         <ul>
@@ -160,7 +120,7 @@ export default function Product() {
                 onClick={() => handleDeleteProduct(product._id)}
                 type="button"
               >
-                <FiTrash2 size={20} color="#E64A19" />
+                <DeleteOutlinedIcon color="#E64A19" />
               </button>
             </li>
           ))}
@@ -183,7 +143,7 @@ export default function Product() {
                     {...item}
                   />
                 )}
-                onChange={(ev, page) =>setPage(page)}
+                onChange={(ev, page) => setPage(page)}
               />
             );
           }}

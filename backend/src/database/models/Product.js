@@ -1,27 +1,39 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
-const ProductSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 1,
-    unique: true,
-    trim: true
-  },
-  code: {
-    type: String,
-    required: true,
-    minlength: 1,
-    unique: true,
-    trim: true
-  },
-  note: {
-    type: String,  
-    trim: true
+class Product {
+  initSchema() {
+    const schema = new mongoose.Schema({
+      name: {
+        type: String,
+        required: true,
+        minlength: 1,
+        unique: true,
+        trim: true
+      },
+      code: {
+        type: String,
+        required: true,
+        minlength: 1,
+        unique: true,
+        trim: true
+      },
+      note: {
+        type: String,
+        trim: true
+      }
+    });
+
+    // ProductSchema.plugin(uniqueValidator);
+
+    schema.plugin(uniqueValidator);
+    mongoose.model("Product", schema);
   }
-});
 
-ProductSchema.plugin(uniqueValidator);
+  getInstance() {
+    this.initSchema();
+    return mongoose.model("Product");
+  }
+}
 
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = Product;

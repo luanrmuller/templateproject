@@ -1,32 +1,48 @@
-var handleError = require("http-errors");
+const handleError = require("http-errors");
 const express = require("express");
-const cors = require("cors");
-const { errors } = require("celebrate");
 const routes = require("./routes");
-var passport = require("passport");
+const passport = require("passport");
+const celebrate = require("celebrate");
+const cors = require("cors");
 
 const app = express();
 
-require("./database/db");
+//---------------------------------------------------------------------------
+// ! Cors
+var corsOptions = {
+  // origin: "http://localhost:5000",
+  exposedHeaders: ["X-Total-Count"]
+};
 
+require("./database/database");
+
+app.use(cors(corsOptions));
+
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+//---------------------------------------------------------------------------
+// ! passport
 app.use(passport.initialize());
 require("./config/auth")(passport);
 
-app.use(express.urlencoded({ extended: false }));
+//---------------------------------------------------------------------------
+// ! Celebrate errors
+app.use(celebrate.errors());
 
-app.use(cors({
-  exposedHeaders: [ 'X-Total-Count'],
-}));
-app.use(express.json());
+//---------------------------------------------------------------------------
+// ! Routes
 app.use(routes);
-app.use(errors());
 
-// catch 404 and forward to error handler
+//---------------------------------------------------------------------------
+// ! catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(handleError(404, "Not found", { code: 404 }));
 });
 
-// error handler
+//---------------------------------------------------------------------------
+// ! error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

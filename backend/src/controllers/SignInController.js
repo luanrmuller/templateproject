@@ -1,24 +1,22 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express"); 
 const User = require("../database/models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET || "some other secret as default";
+const router = express.Router();
 
 router.post("/", async (req, res) => {
   const errors = {};
   const { login, password } = req.body;
 
   let user = undefined;
-
   if (login) {
-    const username = login;
-    user = await User.findOne({ username }).select("+password");
+    user = await User.findOne({ login }).select("+password");
   }
 
   if (!user) {
-    const email = login;
-    user = await User.findOne({ email }).select("+password");
+    const name = login;
+    user = await User.findOne({ name }).select("+password");
   }
 
   // return if there was no user with this username found in the database

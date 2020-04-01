@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { FiActivity } from "react-icons/fi";
 
 import api from "../../services/api";
 import "./styles.css";
@@ -25,10 +24,7 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <h1 className="msg">
-        {msg}
-        <FiActivity size={16} color="#41414d" />
-      </h1>
+      <h1 className="msg">{msg}</h1>
 
       <Link className="button" to="/products">
         Produtos

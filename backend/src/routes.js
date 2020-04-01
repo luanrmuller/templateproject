@@ -8,7 +8,8 @@ const DashboardController = require("./controllers/DashboardController");
 
 // ? registrations
 const CostumerController = require("./controllers/registrations/CostumerController");
-const ProductController = require("./controllers/registrations/ProductController");
+// const ProductController = require("./controllers/registrations/ProductController");
+const ProductRoutes = require("./routes/Product.routes");
 const UserController = require("./controllers/registrations/UserController");
 
 // ? Orders
@@ -18,6 +19,10 @@ const router = express.Router();
 
 // * No authenticated router
 router.use("/login", SignInController);
+
+router.get("/a", (req, res) => {
+  return res.json({ funcionando: true });
+});
 
 router.all(
   "/api/*",
@@ -29,10 +34,10 @@ router.all(
   passport.authenticate("jwt", { session: false })
 );
 
-// Authenticated router
+// * Authenticated router
 //-----------------------------------------------------------------------------
 // ! Initial router
-router.use("/api/signup", SignUpController);
+router.use("/signup", SignUpController);
 router.use("/api/dashboard", DashboardController);
 
 // ! registrations

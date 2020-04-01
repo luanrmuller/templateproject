@@ -3,13 +3,12 @@ var router = express.Router();
 
 const User = require("../database/models/user");
 
-router.post("/signup", async (req, res) => {
+router.post("/", async (req, res) => {
   var errors = {};
-  const user = await User.findOne({ username: req.body.username });
+  const user = await findOne({ username: req.body.username });
 
   const newUser = new User({ ...req.body });
 
-  console.log(newUser);
   try {
     await newUser.save();
   } catch (e) {
