@@ -5,12 +5,13 @@ class Controller {
     this.getById = this.getById.bind(this);
     this.insert = this.insert.bind(this);
     this.update = this.update.bind(this);
+    this.patch = this.patch.bind(this);
     this.delete = this.delete.bind(this);
     this.count = this.count.bind(this);
   }
 
-  async getAll(req, res) {
-    return retorno(res, await this.service.getAll(req.query));
+  async getAll(req, res, next) {
+    return retorno(res, await this.service.getAll(req.query, next));
   }
 
   async getById(req, res) {
@@ -18,31 +19,40 @@ class Controller {
     return retorno(res, await this.service.getById(id));
   }
 
-  async insert(req, res) {
-    return retorno(res, await this.service.insert(req.body));
+  async insert(req, res, next) {
+    return retorno(res, await this.service.insert(req.body, next));
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     const { id } = req.params;
-
-    return retorno(res, await this.service.update(id, req.body));
+    return retorno(res, await this.service.update(id, req.body, next));
   }
 
-  async delete(req, res) {
+  async patch(req, res, next) {
     const { id } = req.params;
-
-    return retorno(res, await this.service.delete(id));
+    return retorno(res, await this.service.patch(id, req.body, next));
   }
 
-  async count(req, res) {
-    return retorno(res, await this.service.count());
+  async delete(req, res, next) {
+    const { id } = req.params;
+    return retorno(res, await this.service.delete(id, next));
+  }
+
+  async count(req, res, next) {
+    return retorno(res, await this.service.count(next));
   }
 }
 
 function retorno(res, response) {
-  res.status(response.code);
-  if (response.error) {
-    return res.json({ message: response.message, errors: response.errors });
+  if (!response) {
+    res.status(200);
+    return res.send();
+  }
+
+  res.status(response.statusCode);
+
+  if (response.message) {
+    return res.json({ message: response.message });
   }
 
   if (response.count) {

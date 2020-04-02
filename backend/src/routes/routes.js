@@ -1,19 +1,19 @@
 const express = require("express");
 const passport = require("passport");
 const { celebrate, Segments, Joi } = require("celebrate");
+const permissionMiddleware = require("../middleware/PermissionMiddleware");
 
-const SignInController = require("./controllers/SignInController");
-const SignUpController = require("./controllers/SignUpController");
-const DashboardController = require("./controllers/DashboardController");
+const SignInController = require("../controllers/SignInController");
+const SignUpController = require("../controllers/SignUpController");
+const DashboardController = require("../controllers/DashboardController");
 
 // ? registrations
-const CostumerController = require("./controllers/registrations/CostumerController");
-// const ProductController = require("./controllers/registrations/ProductController");
-const ProductRoutes = require("./routes/Product.routes");
-const UserController = require("./controllers/registrations/UserController");
+const CostumerController = require("./customer.routes");
+const ProductRoutes = require("./product.routes");
+const UserController = require("./user.routes");
 
 // ? Orders
-const OrderController = require("./controllers/OrderController");
+const OrderController = require("../controllers/OrderController");
 
 const router = express.Router();
 
@@ -41,10 +41,9 @@ router.use("/signup", SignUpController);
 router.use("/api/dashboard", DashboardController);
 
 // ! registrations
-router.use("/api/users", UserController);
-router.use("/api/costomers", CostumerController);
-// router.use("/api/products", ProductController);
-ProductRoutes(router);
+UserController(router, permissionMiddleware);
+CostumerController(router);
+ProductRoutes(router, permissionMiddleware);
 
 // ! Orders
 // router.use("/api/orders", OrderController);

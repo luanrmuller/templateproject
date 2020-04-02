@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 class Product {
   initSchema() {
@@ -17,12 +18,12 @@ class Product {
         minlength: 1,
         unique: true,
         trim: true
-      } 
+      }
     });
 
-    // ProductSchema.plugin(uniqueValidator);
-
     schema.plugin(uniqueValidator);
+    schema.plugin(beautifyUnique);
+    
     mongoose.model("Product", schema);
   }
 

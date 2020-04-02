@@ -1,7 +1,9 @@
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const secret = process.env.SECRET || "some other secret as default";
 
-const User = require("../database/models/user");
+// const User = require("../database/models/user");
+const UserController = require("../controllers/registrations/UserController");
+
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: secret
@@ -10,12 +12,13 @@ const opts = {
 module.exports = passport => {
   passport.use(
     new Strategy(opts, async (payload, done) => {
-      await User.findById(payload.id)
+      await UserController.findById(payload.id)
         .then(user => {
           if (user) {
             return done(null, {
               id: user.id,
-              username: user.username
+              name: user.name,
+              permissionLevel: user.permissionLevel
             });
           }
 

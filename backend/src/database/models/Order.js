@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const beautifyUnique = require("mongoose-beautiful-unique-validation");
 
-const OrderSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   costumer: {
     type: String,
     required: true,
@@ -12,6 +13,7 @@ const OrderSchema = new mongoose.Schema({
   products: [{ type: Schema.Types.ObjectId, ref: "Product" }]
 });
 
-OrderSchema.plugin(uniqueValidator);
+schema.plugin(uniqueValidator);
+schema.plugin(beautifyUnique);
 
-module.exports = mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model("Order", schema);

@@ -1,6 +1,7 @@
 const handleError = require("http-errors");
+const errorHandler = require('./middleware/HttpErrorsMiddleware');
 const express = require("express");
-const routes = require("./routes");
+const routes = require("./routes/routes");
 const passport = require("passport");
 const celebrate = require("celebrate");
 const cors = require("cors");
@@ -43,12 +44,14 @@ app.use(function(req, res, next) {
 
 //---------------------------------------------------------------------------
 // ! error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-  res.status(err.status || 500);
-  return res.status(404).json(err);
-});
+app.use(errorHandler({ debug: true }));
+
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get("env") === "development" ? err : {};
+//   res.status(err.status || 500);
+//   return res.status(404).json(err);
+// });
 
 module.exports = app;

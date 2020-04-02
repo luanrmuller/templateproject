@@ -25,8 +25,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
+    "http-errors-middleware": "^0.2.2",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
     "mongoose": "^5.9.7",
+    "mongoose-beautiful-unique-validation": "^7.1.1",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0"
