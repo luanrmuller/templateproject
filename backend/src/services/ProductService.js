@@ -1,9 +1,9 @@
 const Service = require("./Service");
 
-class ProuctService extends Service {
+class ProductService extends Service {
   constructor(model) {
     super(model);
   }
 }
 
-module.exports = ProuctService;
+module.exports = ProductService;

@@ -43,7 +43,8 @@ router.use("/api/dashboard", DashboardController);
 // ! registrations
 router.use("/api/users", UserController);
 router.use("/api/costomers", CostumerController);
-router.use("/api/products", ProductController);
+// router.use("/api/products", ProductController);
+ProductRoutes(router);
 
 // ! Orders
 // router.use("/api/orders", OrderController);

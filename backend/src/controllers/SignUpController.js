@@ -5,7 +5,7 @@ const User = require("../database/models/user");
 
 router.post("/", async (req, res) => {
   var errors = {};
-  const user = await findOne({ username: req.body.username });
+  const user = await User.findOne({ username: req.body.username });
 
   const newUser = new User({ ...req.body });
 

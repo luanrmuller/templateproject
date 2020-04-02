@@ -9,6 +9,7 @@ router.post("/", async (req, res) => {
   const errors = {};
   const { login, password } = req.body;
 
+  console.log(login);
   let user = undefined;
   if (login) {
     user = await User.findOne({ login }).select("+password");
@@ -16,6 +17,7 @@ router.post("/", async (req, res) => {
 
   if (!user) {
     const name = login;
+    
     user = await User.findOne({ name }).select("+password");
   }
 

@@ -17,11 +17,7 @@ class Product {
         minlength: 1,
         unique: true,
         trim: true
-      },
-      note: {
-        type: String,
-        trim: true
-      }
+      } 
     });
 
     // ProductSchema.plugin(uniqueValidator);

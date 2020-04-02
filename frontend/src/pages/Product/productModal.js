@@ -10,8 +10,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 
-import { FiEdit2 } from "react-icons/fi";
-import { FiPlus } from "react-icons/fi";
+// import { FiEdit2 } from "react-icons/fi";
+// import { FiPlus } from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -74,8 +74,8 @@ export default function FormDialog(props) {
         component="span"
         onClick={handleClickOpen}
       >
-        {!hasProduct && <FiEdit2 size={20} color="#0288D1" />}
-        {hasProduct && <FiPlus size={20} color="#00796B" />}
+        {/* {!hasProduct && <FiEdit2 size={20} color="#0288D1" />}
+        {hasProduct && <FiPlus size={20} color="#00796B" />} */}
       </IconButton>
 
       <Dialog
