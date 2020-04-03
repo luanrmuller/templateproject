@@ -26,20 +26,16 @@ class Customer {
     schema.statics.joiValidate = function(obj) {
       const { Joi } = require("celebrate");
 
-      var schemaValidator = {
-        name: Joi.types
-          .String()
+      return Joi.object({
+        name: Joi.string()
           .min(1)
           .max(30)
           .required(),
-        code: Joi.types
-          .String()
+        code: Joi.string()
           .min(1)
           .max(30)
           .required()
-      };
-
-      return Joi.validate(obj, schemaValidator);
+      }).validate(obj);
     };
 
     mongoose.model("Customer", schema);

@@ -66,7 +66,31 @@ class User {
     schema.plugin(beautifyUnique, {
       defaultMessage: "This custom message will be used as the default"
     });
+    schema.statics.joiValidate = function(obj) {
+      const { Joi } = require("celebrate");
 
+      return Joi.object({
+        name: Joi.string()
+          .min(1)
+          .max(30)
+          .required(),
+        login: Joi.string()
+          .min(1)
+          .max(30)
+          .required(),
+        password: Joi.string()
+          .min(8)
+          .max(30)
+          // .regex(/[a-zA-Z0-9]{3,30}/)
+          .alphanum()
+          .required(),
+        permissionLevel: Joi.Number()
+          .min(0)
+          .max(100)
+          .required(),
+        createdAt: Joi.Date()
+      }).validate(obj);
+    };
     const User = mongoose.model("User", schema);
 
     User.on("index", async err => {
@@ -120,38 +144,6 @@ class User {
     this.initSchema();
     return mongoose.model("User");
   }
-
-  joiValidate = function(obj) {
-    const { Joi } = require("celebrate");
-
-    var schemaValidator = {
-      name: Joi.types
-        .String()
-        .min(1)
-        .max(30)
-        .required(),
-      login: Joi.types
-        .String()
-        .min(1)
-        .max(30)
-        .required(),
-      password: Joi.types
-        .String()
-        .min(8)
-        .max(30)
-        // .regex(/[a-zA-Z0-9]{3,30}/)
-        .alphanum()
-        .required(),
-      permissionLevel: Joi.types
-        .Number()
-        .min(0)
-        .max(100)
-        .required(),
-      createdAt: Joi.types.Date()
-    };
-
-    return Joi.validate(obj, schemaValidator);
-  };
 }
 
 module.exports = User;

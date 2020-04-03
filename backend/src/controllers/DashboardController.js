@@ -9,7 +9,6 @@ router.get("/", (request, response) => {
 router.get("/modules", (request, response) => {
   const modules = [
     "Clientes",
-    "Vendas",
     "Cadastros",
     "Atendimento",
     "Agendamento",
