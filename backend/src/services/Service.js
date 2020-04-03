@@ -5,6 +5,7 @@ const resp = require("../utils/ResponseUtils");
 class Service {
   constructor(model) {
     this.model = model;
+    this.validate = this.validate.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
     this.insert = this.insert.bind(this);
@@ -12,6 +13,16 @@ class Service {
     this.patch = this.patch.bind(this);
     this.delete = this.delete.bind(this);
     this.count = this.count.bind(this);
+  }
+
+  async validate(item, next) {
+    try {
+      // if (typeof this.model.joiValidate === "function") {
+      return await this.model.joiValidate(item);
+      // }
+    } catch (err) {
+      next(handleError(err));
+    }
   }
 
   async getAll(query, next) {
@@ -53,21 +64,24 @@ class Service {
 
   async getById(id, next) {
     try {
-      let data = await this.model.findById(id).exec();
+      let data = await this.model.findById(id);
       if (!data) return { statusCode: 404, message: "Item not found" };
 
-      return resp.success(data);
+      return { statusCode: 200, data };
     } catch (err) {
+      console.log(err);
       next(handleError(err));
     }
   }
 
   async insert(item, next) {
     try {
+      this.validate(item, next);
+
       let data = await this.model.create(item);
       if (!data) return { statusCode: 404, message: "Not able to create item" };
 
-      return resp.success(data, 201);
+      return { statusCode: 201, data };
     } catch (err) {
       next(handleError(err));
     }
@@ -88,7 +102,7 @@ class Service {
 
   async patch(id, item, next) {
     try {
-      const data = await this.model.update(id, { $set: item });
+      const data = await this.model.update({ _id: id }, { $set: item });
       if (!data) return { statusCode: 404, message: "Item not found" };
 
       return { statusCode: 202 };
@@ -113,7 +127,7 @@ class Service {
       let count = await this.model.countDocuments();
       if (!count) return { statusCode: 500 };
 
-      return res.json(null, 202, "", count);
+      return { statusCode: 202, count };
     } catch (err) {
       next(handleError(err));
     }

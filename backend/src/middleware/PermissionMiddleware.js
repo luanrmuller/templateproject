@@ -1,4 +1,4 @@
-exports.minimumPermissionLevelRequired = required_permission_level => {
+exports.minimumPermissionLevelRequired = permissonLevel => {
   return (req, res, next) => {
     const user_permission_level = parseInt(req.user.permissionLevel);
 
@@ -7,7 +7,7 @@ exports.minimumPermissionLevelRequired = required_permission_level => {
       return next();
     }
 
-    if (user_permission_level >= required_permission_level) {
+    if (permissonLevel && user_permission_level >= permissonLevel.getValue()) {
       return next();
     } else {
       return res.status(403).send();

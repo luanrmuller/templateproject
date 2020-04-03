@@ -3,14 +3,12 @@ const passport = require("passport");
 const { celebrate, Segments, Joi } = require("celebrate");
 const permissionMiddleware = require("../middleware/PermissionMiddleware");
 
-const SignInController = require("../controllers/SignInController");
-const SignUpController = require("../controllers/SignUpController");
 const DashboardController = require("../controllers/DashboardController");
 
 // ? registrations
 const CostumerController = require("./customer.routes");
 const ProductRoutes = require("./product.routes");
-const UserController = require("./user.routes");
+const UserController = require("./User.routes");
 
 // ? Orders
 const OrderController = require("../controllers/OrderController");
@@ -18,10 +16,8 @@ const OrderController = require("../controllers/OrderController");
 const router = express.Router();
 
 // * No authenticated router
-router.use("/login", SignInController);
-
-router.get("/a", (req, res) => {
-  return res.json({ funcionando: true });
+router.get("/", (req, res) => {
+  return res.json({ message: "¯_(ツ)_/¯" });
 });
 
 router.all(
@@ -37,12 +33,12 @@ router.all(
 // * Authenticated router
 //-----------------------------------------------------------------------------
 // ! Initial router
-router.use("/signup", SignUpController);
+// router.use("/signup", SignUpController);
 router.use("/api/dashboard", DashboardController);
 
 // ! registrations
 UserController(router, permissionMiddleware);
-CostumerController(router);
+CostumerController(router, permissionMiddleware);
 ProductRoutes(router, permissionMiddleware);
 
 // ! Orders

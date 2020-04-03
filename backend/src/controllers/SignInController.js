@@ -1,11 +1,15 @@
 const express = require("express");
-// const User = require("../database/models/user");
-const UserController = require("../controllers/registrations/UserController");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET || "some other secret as default";
 const router = express.Router();
+
+const User = require("../database/models/user");
+// const UserController = require("../controllers/registrations/UserController");
+const UserService = require("../services/UserService");
+
+const userService = new UserService(new User().getInstance());
 
 router.post("/", async (req, res) => {
   const errors = {};
@@ -13,7 +17,7 @@ router.post("/", async (req, res) => {
 
   let user = undefined;
   if (login) {
-    user = await UserController.findOneByLoginWithPassword(login);
+    user = await userService.findOneByLoginWithPassword(login);
   }
 
   // return if there was no user with this username found in the database

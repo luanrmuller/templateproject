@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
-const beautifyUnique = require('mongoose-beautiful-unique-validation');
+const beautifyUnique = require("mongoose-beautiful-unique-validation");
 
 class Product {
   initSchema() {
@@ -23,7 +23,7 @@ class Product {
 
     schema.plugin(uniqueValidator);
     schema.plugin(beautifyUnique);
-    
+
     mongoose.model("Product", schema);
   }
 
@@ -31,6 +31,25 @@ class Product {
     this.initSchema();
     return mongoose.model("Product");
   }
+
+  joiValidate = function(obj) {
+    const { Joi } = require("celebrate");
+
+    var schemaValidator = {
+      name: Joi.types
+        .String()
+        .min(1)
+        .max(30)
+        .required(),
+      code: Joi.types
+        .String()
+        .min(1)
+        .max(30)
+        .required()
+    };
+    
+    return Joi.validate(obj, schemaValidator);
+  };
 }
 
 module.exports = Product;

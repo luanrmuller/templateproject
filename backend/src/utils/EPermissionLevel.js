@@ -1,4 +1,5 @@
 module.exports = class EPermissionLevel {
+  /** Todas as rotas sao liberadas para o perfil admin */
   static ADMIN = new EPermissionLevel(100, "Admin");
   static CONFIGURACAO = new EPermissionLevel(90, "Director");
   static SUPORTE = new EPermissionLevel(80, "Admin");

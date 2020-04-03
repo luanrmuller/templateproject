@@ -1,17 +1,27 @@
+var handleError = require("http-errors");
 var express = require("express");
 var router = express.Router();
 
-// const User = require("../database/models/user");
-const UserController = require("../controllers/registrations/UserController");
+const User = require("../database/models/user");
+// const UserController = require("../controllers/registrations/UserController");
+const UserService = require("../services/UserService");
 
-router.post("/", async (req, res) => {
+const userService = new UserService(new User().getInstance());
+
+router.post("/", async (req, res, next) => {
+  const { name, login, password, permissionLevel } = req.body;
   var errors = {};
-  const user = await UserController.findOne(req.body.login);
+  const user = await userService.findOneByLoginWithPassword(req.body.login);
 
-  const newUser = new User({ ...req.body });
+  if (user) {
+    // return res.status(400).json({});
+    next(handleError(400, "User not found"));
+  }
+  
+  const newUser = new User({ name, login, password, permissionLevel });
 
   try {
-    await newUser.save();
+    await userService.insert(newUser);
   } catch (e) {
     errors = e;
     return res.status(400).json(e);

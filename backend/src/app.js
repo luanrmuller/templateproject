@@ -1,12 +1,30 @@
+// ? Libs externas
+//Controle de erros da api
 const handleError = require("http-errors");
-const errorHandler = require('./middleware/HttpErrorsMiddleware');
+//Server express
 const express = require("express");
-const routes = require("./routes/routes");
+//Autenticacao das rotas protegidas
 const passport = require("passport");
+//Validacao de parametros na rota
 const celebrate = require("celebrate");
+//Acesso externo
 const cors = require("cors");
 
+// ? Local
+// Configura os erros para o retorno
+const errorHandler = require("./middleware/HttpErrorsMiddleware");
+//rotas disponiveis na api
+const routes = require("./routes/routes");
+
+// ! Inicializacao da api
 const app = express();
+
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// * Configura a conexao com o banco de dados
+require("./database/database");
 
 //---------------------------------------------------------------------------
 // ! Cors
@@ -15,13 +33,7 @@ var corsOptions = {
   exposedHeaders: ["X-Total-Count"]
 };
 
-require("./database/database");
-
 app.use(cors(corsOptions));
-
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 //---------------------------------------------------------------------------
 // ! passport

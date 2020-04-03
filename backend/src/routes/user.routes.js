@@ -1,18 +1,47 @@
 const UserController = require("../controllers/registrations/UserController");
+const EPermissonLevel = require("../utils/EPermissionLevel");
 
-module.exports = (routes, permissionMiddleware) => {
-  // POST ROUTES
-  routes. patch(
-    `/api/users/:id`,
-    // permissionMiddleware.minimumPermissionLevelRequired(FREE),
-    UserController.updatepassword
+module.exports = (routes, permission) => {
+  // * No authenticated router
+  routes.post(`/login`, UserController.login);
+  routes.post(`/signup`, UserController.signup);
+
+  // * Authenticated router
+  routes.patch(`/api/users/:id`, UserController.updatepassword);
+
+  routes.get(
+    `/api/users`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
+    UserController.getAll
   );
-
-  routes.get(`/api/users`, UserController.getAll);
-  routes.get(`/api/users/:id`, UserController.getById);
-  routes.post(`/users`, UserController.insert);
-  routes.post(`/api/users`, UserController.insert);
-  routes.put(`/api/users/:id`, UserController.update);
-  routes.delete(`/api/users/:id`, UserController.delete);
-  routes.options(`/api/users/count`, UserController.count);
+  routes.get(
+    `/api/users/:id`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
+    UserController.getById
+  );
+  routes.get(
+    `/api/usersCount`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
+    UserController.count
+  );
+  routes.post(
+    `/api/users`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
+    UserController.insert
+  );
+  routes.put(
+    `/api/users/:id`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
+    UserController.update
+  );
+  routes.patch(
+    `/api/users/:id`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
+    UserController.update
+  );
+  routes.delete(
+    `/api/users/:id`,
+    permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
+    UserController.delete
+  );
 };

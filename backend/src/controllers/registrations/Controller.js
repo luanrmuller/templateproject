@@ -1,3 +1,5 @@
+var handleError = require("http-errors");
+
 class Controller {
   constructor(service) {
     this.service = service;
@@ -14,7 +16,7 @@ class Controller {
     return retorno(res, await this.service.getAll(req.query, next));
   }
 
-  async getById(req, res) {
+  async getById(req, res, next) {
     const { id } = req.params;
     return retorno(res, await this.service.getById(id));
   }
@@ -44,26 +46,30 @@ class Controller {
 }
 
 function retorno(res, response) {
-  if (!response) {
-    res.status(200);
+  try {
+    if (!response) {
+      res.status(200);
+      return res.send();
+    }
+
+    res.status(response.statusCode);
+
+    if (response.message) {
+      return res.json({ message: response.message });
+    }
+
+    if (response.count) {
+      res.header("X-Total-Count", response.count);
+    }
+
+    if (response.data) {
+      return res.json(response.data);
+    }
+
     return res.send();
+  } catch (err) {
+    next(handleError(err));
   }
-
-  res.status(response.statusCode);
-
-  if (response.message) {
-    return res.json({ message: response.message });
-  }
-
-  if (response.count) {
-    res.header("X-Total-Count", response.count);
-  }
-
-  if (response.data) {
-    return res.json(response.data);
-  }
-
-  return res.send();
 }
 
 module.exports = Controller;

@@ -23,6 +23,24 @@ class Customer {
 
     schema.plugin(uniqueValidator);
     schema.plugin(beautifyUnique);
+    schema.statics.joiValidate = function(obj) {
+      const { Joi } = require("celebrate");
+
+      var schemaValidator = {
+        name: Joi.types
+          .String()
+          .min(1)
+          .max(30)
+          .required(),
+        code: Joi.types
+          .String()
+          .min(1)
+          .max(30)
+          .required()
+      };
+
+      return Joi.validate(obj, schemaValidator);
+    };
 
     mongoose.model("Customer", schema);
   }

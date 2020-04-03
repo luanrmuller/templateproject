@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const beautifyUnique = require("mongoose-beautiful-unique-validation");
 const bcrypt = require("bcryptjs");
+
 const PermissionLevel = require("../../utils/EPermissionLevel");
 
 class User {
@@ -119,6 +120,38 @@ class User {
     this.initSchema();
     return mongoose.model("User");
   }
+
+  joiValidate = function(obj) {
+    const { Joi } = require("celebrate");
+
+    var schemaValidator = {
+      name: Joi.types
+        .String()
+        .min(1)
+        .max(30)
+        .required(),
+      login: Joi.types
+        .String()
+        .min(1)
+        .max(30)
+        .required(),
+      password: Joi.types
+        .String()
+        .min(8)
+        .max(30)
+        // .regex(/[a-zA-Z0-9]{3,30}/)
+        .alphanum()
+        .required(),
+      permissionLevel: Joi.types
+        .Number()
+        .min(0)
+        .max(100)
+        .required(),
+      createdAt: Joi.types.Date()
+    };
+
+    return Joi.validate(obj, schemaValidator);
+  };
 }
 
 module.exports = User;
