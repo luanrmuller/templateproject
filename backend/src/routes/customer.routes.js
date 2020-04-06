@@ -1,39 +1,43 @@
 const CustomerController = require("../controllers/registrations/CustomerController");
 const EPermissonLevel = require("../utils/EPermissionLevel");
 
-module.exports = (routes, permission) => {
-  // POST ROUTES
-  routes.get(
+module.exports = (router, permission) => {
+  // * No authenticated router
+  router.post(`/login`, CustomerController.login);
+  router.post(`/signup`, CustomerController.signup);
+
+  // * Authenticated router
+  router.get(
     `/api/customers`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     CustomerController.getAll
   );
-  routes.get(
+  router.get(
     `/api/customers/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     CustomerController.getById
   );
-  routes.get(
+  router.get(
     `/api/customersCount`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     CustomerController.count
   );
-  routes.post(
+  router.post(
     `/api/customers`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
     CustomerController.insert
   );
-  routes.put(
+  router.put(
     `/api/customers/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
     CustomerController.update
   );
-  routes.patch(
+  router.patch(
     `/api/customers/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
     CustomerController.patch
   );
-  routes.delete(
+  router.delete(
     `/api/customers/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
     CustomerController.delete

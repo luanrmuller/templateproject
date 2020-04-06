@@ -1,22 +1,23 @@
-const express = require("express");
+class DashboardController {
+  dashboardModules(req, res, next) {
+    const modules = [];
 
-const router = express.Router();
+    const permissionLevel = 50;
+    const customersPermissionLevelList = [100, 90, 80, 70, 60];
 
-router.get("/", (request, response) => {
-  return response.json({ msg: "Hello world from backend!" });
-});
+    // if (customersPermissionLevelList.contains(permissionLevel)) {
+    modules.push({ title: "Customers", url: "customers" });
+    // }
+    const registerPermissionLevelList = [100, 90, 80];
 
-router.get("/modules", (request, response) => {
-  const modules = [
-    "Clientes",
-    "Vendas",
-    "Cadastros",
-    "Atendimento",
-    "Agendamento",
-    "Outros"
-  ];
+    modules.push({ title: "Ordens de servico", url: "serviceorders" });
+    modules.push({ title: "Registers", url: "/registers" });
+    modules.push({ title: "Atendimento", url: "/api/" });
+    modules.push({ title: "Agendamento", url: "attends" });
+    modules.push({ title: "Outros", url: "" });
 
-  return response.json(modules);
-});
+    return res.json(modules);
+  }
+}
 
-module.exports = router;
+module.exports = new DashboardController();

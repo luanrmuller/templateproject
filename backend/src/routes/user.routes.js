@@ -1,45 +1,45 @@
 const UserController = require("../controllers/registrations/UserController");
 const EPermissonLevel = require("../utils/EPermissionLevel");
 
-module.exports = (routes, permission) => {
+module.exports = (router, permission) => {
   // * No authenticated router
-  routes.post(`/login`, UserController.login);
-  routes.post(`/signup`, UserController.signup);
+  router.post(`/login`, UserController.login);
+  router.post(`/signup`, UserController.signup);
 
   // * Authenticated router
-  routes.patch(`/api/users/:id`, UserController.updatepassword);
+  router.patch(`/api/users/:id`, UserController.updatepassword);
 
-  routes.get(
+  router.get(
     `/api/users`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     UserController.getAll
   );
-  routes.get(
+  router.get(
     `/api/users/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     UserController.getById
   );
-  routes.get(
+  router.get(
     `/api/usersCount`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
     UserController.count
   );
-  routes.post(
+  router.post(
     `/api/users`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
     UserController.insert
   );
-  routes.put(
+  router.put(
     `/api/users/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
     UserController.update
   );
-  routes.patch(
+  router.patch(
     `/api/users/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
     UserController.update
   );
-  routes.delete(
+  router.delete(
     `/api/users/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
     UserController.delete

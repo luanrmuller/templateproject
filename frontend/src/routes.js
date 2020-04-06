@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-// import PageNotFound from "./pages/PageNotFound";
+import Registers from "./pages/Registers";
 import Dashboard from "./pages/Dashboard";
-import Product from "./pages/Product";
+import Products from "./pages/Registers/Products";
+import Emails from "./pages/Registers/Emails";
 
 export default function Routes() {
   return (
@@ -14,11 +15,11 @@ export default function Routes() {
         <Route path="/" exact component={SignIn} />
         <Route path="/signUp" exact component={SignUp} />
 
-        {/*         
-        <Route path="/pageNotFound" exact component={PageNotFound} />
-        <Route path="/dashboard" exact component={Dashboard} /> */}
+        <Route path="/registers" exact component={Registers} />
+        {/*  <Route path="/dashboard" exact component={Dashboard} /> */}
         <Route path="/dashboard" exact component={Dashboard} />
-        <Route path="/products" exact component={Product} />
+        <Route path="/products" exact component={Products} />
+        <Route path="/emails" exact component={Emails} />
       </Switch>
     </BrowserRouter>
   );

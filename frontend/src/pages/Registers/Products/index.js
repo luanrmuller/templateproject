@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import Pagination from "@material-ui/lab/Pagination";
 import PaginationItem from "@material-ui/lab/PaginationItem";
 
-import api from "../../services/api";
+import api from "../../../services/api";
 import "./styles.css";
 
 import ProductModal from "./productModal";
 
-export default function Product() {
+export default function Products() {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);

@@ -3,15 +3,16 @@ const passport = require("passport");
 const { celebrate, Segments, Joi } = require("celebrate");
 const permissionMiddleware = require("../middleware/PermissionMiddleware");
 
-const DashboardController = require("../controllers/DashboardController");
+const DashboardRoutes = require("./Dashboard.routes");
 
 // ? registrations
-const CostumerController = require("./customer.routes");
+const CostumerRoutes = require("./customer.routes");
 const ProductRoutes = require("./product.routes");
-const UserController = require("./User.routes");
+const UserRoutes = require("./User.routes");
+const EmailRoutes = require("./Email.routes");
 
 // ? Orders
-const OrderController = require("../controllers/OrderController");
+// const OrderRoutes = require("../controllers/OrderRoutes");
 
 const router = express.Router();
 
@@ -24,8 +25,8 @@ router.all(
   "/api/*",
   celebrate({
     [Segments.HEADERS]: Joi.object({
-      authorization: Joi.string().required()
-    }).unknown()
+      authorization: Joi.string().required(),
+    }).unknown(),
   }),
   passport.authenticate("jwt", { session: false })
 );
@@ -33,16 +34,16 @@ router.all(
 // * Authenticated router
 //-----------------------------------------------------------------------------
 // ! Initial router
-// router.use("/signup", SignUpController);
-router.use("/api/dashboard", DashboardController);
+DashboardRoutes(router);
 
 // ! registrations
-UserController(router, permissionMiddleware);
-CostumerController(router, permissionMiddleware);
+UserRoutes(router, permissionMiddleware);
+CostumerRoutes(router, permissionMiddleware);
 ProductRoutes(router, permissionMiddleware);
+EmailRoutes(router, permissionMiddleware);
 
 // ! Orders
-// router.use("/api/orders", OrderController);
+// router.use("/api/orders", OrderRoutes);
 
 // TODO: other router here....
 

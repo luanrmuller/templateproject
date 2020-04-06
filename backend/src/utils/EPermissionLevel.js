@@ -7,6 +7,7 @@ module.exports = class EPermissionLevel {
   static MANAGER = new EPermissionLevel(60, "Manager");
   static COORDINATOR = new EPermissionLevel(50, "Coordinator");
   static SALES_PERSON = new EPermissionLevel(40, "Salesperson");
+  static CUSTOMER = new EPermissionLevel(40, "Customer");
 
   constructor(value, description) {
     this.value = value;

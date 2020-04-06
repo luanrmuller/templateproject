@@ -45,7 +45,7 @@ class Controller {
   }
 }
 
-function retorno(res, response) {
+function retorno(res, response,next) {
   try {
     if (!response) {
       res.status(200);

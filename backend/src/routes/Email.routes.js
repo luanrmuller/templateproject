@@ -1,41 +1,41 @@
-const ProductController = require("../controllers/registrations/ProductController");
+const EmailController = require("../controllers/registrations/EmailController");
 const EPermissonLevel = require("../utils/EPermissionLevel");
 
 module.exports = (router, permission) => {
   // POST ROUTES
   router.get(
-    `/api/products`,
+    `/api/emails`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
-    ProductController.getAll
+    EmailController.getAll
   );
   router.get(
-    `/api/products/:id`,
+    `/api/emails/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
-    ProductController.getById
+    EmailController.getById
   );
   router.get(
-    `/api/productsCount`,
+    `/api/emailsCount`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.SALES_PERSON),
-    ProductController.count
+    EmailController.count
   );
   router.post(
-    `/api/products`,
+    `/api/emails`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
-    ProductController.insert
+    EmailController.insert
   );
   router.put(
-    `/api/products/:id`,
+    `/api/emails/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
-    ProductController.update
+    EmailController.update
   );
   router.patch(
-    `/api/products/:id`,
+    `/api/emails/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.COORDINATOR),
-    ProductController.patch
+    EmailController.patch
   );
   router.delete(
-    `/api/products/:id`,
+    `/api/emails/:id`,
     permission.minimumPermissionLevelRequired(EPermissonLevel.MANAGER),
-    ProductController.delete
+    EmailController.delete
   );
 };

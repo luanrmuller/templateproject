@@ -5,30 +5,37 @@ import api from "../../services/api";
 import "./styles.css";
 
 export default function Dashboard() {
-  const [msg, setMsg] = useState("");
+  const [modules, setModules] = useState([]);
 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     api
-      .get("/api/dashboard", {
+      .get("/api/modules", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       })
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
-        setMsg(response.data.msg);
+        setModules(response.data);
       });
   }, [token]);
 
   return (
     <div className="container">
-      <h1 className="msg">{msg}</h1>
+      <div>
+        <ul>
+          {modules.map((module) => (
+            <li key={module.url}>
+              <Link className="button" to={module.url} url={module.url}>
+                {module.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      <Link className="button" to="/products">
-        Produtos
-      </Link>
     </div>
   );
 }

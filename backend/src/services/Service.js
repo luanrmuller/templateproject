@@ -76,7 +76,8 @@ class Service {
 
   async insert(item, next) {
     try {
-      this.validate(item, next);
+      // this.validate(item, next);
+      // await this.model.joiValidate(item)
 
       let data = await this.model.create(item);
       if (!data) return { statusCode: 404, message: "Not able to create item" };

@@ -13,7 +13,7 @@ import Draggable from "react-draggable";
 // import { FiEdit2 } from "react-icons/fi";
 // import { FiPlus } from "react-icons/fi";
 
-import api from "../../services/api";
+import api from "../../../services/api";
 
 function PaperComponent(props) {
   return (
