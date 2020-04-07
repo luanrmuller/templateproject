@@ -1,6 +1,5 @@
 var handleError = require("http-errors");
-const mongoose = require("mongoose");
-const resp = require("../utils/ResponseUtils");
+const mongoose = require("mongoose"); 
 
 class Service {
   constructor(model) {
@@ -94,7 +93,7 @@ class Service {
       const data = await this.model.findByIdAndUpdate(id, item, {
         new: true
       });
-      if (!data) return resp.success(null, 404, "Item not found");
+      if (!data) return  { statusCode: 404, message:"Item not found"};
 
       return { statusCode: 202 };
     } catch (err) {

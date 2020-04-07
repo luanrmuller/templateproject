@@ -18,7 +18,7 @@ const router = express.Router();
 
 // * No authenticated router
 router.get("/", (req, res) => {
-  return res.json({ message: "¯_(ツ)_/¯" });
+  return res.json({ message: "¯\_(ツ)_/¯" });
 });
 
 router.all(

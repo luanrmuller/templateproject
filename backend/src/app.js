@@ -12,9 +12,12 @@ const cors = require("cors");
 //GZIP da response
 var compression = require("compression");
 
+const helmet = require('helmet')
+
 // ? Local
 // Configura os erros para o retorno
 const errorHandler = require("./middleware/HttpErrorsMiddleware");
+const dontSniffMimetype = require("./middleware/DontSniffMimetype");
 //rotas disponiveis na api
 const routes = require("./routes/routes");
 
@@ -28,6 +31,11 @@ app.use(express.json());
 
 // * Configura a conexao com o banco de dados
 require("./database/database");
+
+//---------------------------------------------------------------------------
+// ! Helmet
+app.use(helmet());
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }))
 
 //---------------------------------------------------------------------------
 // ! Cors
@@ -73,6 +81,7 @@ app.use(function(req, res, next) {
 //---------------------------------------------------------------------------
 // ! error handler
 app.use(errorHandler({ debug: true }));
+app.use(dontSniffMimetype);
 
 // app.use(function(err, req, res, next) {
 //   // set locals, only providing error in development
