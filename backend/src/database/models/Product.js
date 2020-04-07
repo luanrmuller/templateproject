@@ -23,6 +23,20 @@ class Product {
 
     schema.plugin(uniqueValidator);
     schema.plugin(beautifyUnique);
+    schema.statics.joiValidate = function(obj) {
+      const { Joi } = require("celebrate");
+
+      return Joi.object({
+        name: Joi.string()
+          .min(1)
+          .max(30)
+          .required(),
+        code: Joi.string()
+          .min(1)
+          .max(30)
+          .required()
+      }).validate(obj);
+    };
 
     mongoose.model("Product", schema);
   }
@@ -31,25 +45,6 @@ class Product {
     this.initSchema();
     return mongoose.model("Product");
   }
-
-  joiValidate = function(obj) {
-    const { Joi } = require("celebrate");
-
-    var schemaValidator = {
-      name: Joi.types
-        .String()
-        .min(1)
-        .max(30)
-        .required(),
-      code: Joi.types
-        .String()
-        .min(1)
-        .max(30)
-        .required()
-    };
-    
-    return Joi.validate(obj, schemaValidator);
-  };
 }
 
 module.exports = Product;

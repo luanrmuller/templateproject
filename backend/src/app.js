@@ -9,6 +9,8 @@ const passport = require("passport");
 const celebrate = require("celebrate");
 //Acesso externo
 const cors = require("cors");
+//GZIP da response
+var compression = require("compression");
 
 // ? Local
 // Configura os erros para o retorno
@@ -19,6 +21,7 @@ const routes = require("./routes/routes");
 // ! Inicializacao da api
 const app = express();
 
+app.set("json spaces", 2);
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -30,11 +33,24 @@ require("./database/database");
 // ! Cors
 var corsOptions = {
   // origin: "http://localhost:5000",
-  exposedHeaders: ["X-Total-Count"]
+  exposedHeaders: ["Location", "X-Total-Count"]
 };
 
 app.use(cors(corsOptions));
 
+//---------------------------------------------------------------------------
+// ! GZIP
+app.use(compression({ filter: shouldCompress }));
+
+function shouldCompress(req, res) {
+  if (req.headers["x-no-compression"]) {
+    // don't compress responses with this request header
+    return false;
+  }
+
+  // fallback to standard filter function
+  return compression.filter(req, res);
+}
 //---------------------------------------------------------------------------
 // ! passport
 app.use(passport.initialize());

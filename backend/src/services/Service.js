@@ -17,9 +17,9 @@ class Service {
 
   async validate(item, next) {
     try {
-      // if (typeof this.model.joiValidate === "function") {
-      return await this.model.joiValidate(item);
-      // }
+      if (typeof this.model.joiValidate === "function") {
+        return await this.model.joiValidate(item);
+      }
     } catch (err) {
       next(handleError(err));
     }
@@ -55,7 +55,6 @@ class Service {
         .limit(pageSize)
         .sort(sort);
 
-      // return resp.success(data, 200, "", count);
       return { statusCode: 200, data, count };
     } catch (err) {
       next(handleError(err));
@@ -76,13 +75,15 @@ class Service {
 
   async insert(item, next) {
     try {
-      // this.validate(item, next);
-      // await this.model.joiValidate(item)
+      if (typeof this.model.joiValidate === "function") {
+        await this.model.joiValidate(item);
+      }
 
       let data = await this.model.create(item);
       if (!data) return { statusCode: 404, message: "Not able to create item" };
 
-      return { statusCode: 201, data };
+      const location = `/${data.id}`;
+      return { statusCode: 201, data, location };
     } catch (err) {
       next(handleError(err));
     }
